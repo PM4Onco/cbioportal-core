@@ -68,7 +68,7 @@ public class TestMutationFilter extends IntegrationTestBase {
       alwaysRejectTheseMutations( myMutationFilter );
       
       // accept all of these, because a MutationFilter without whitelists
-      // accepts all mutations other than Silent, LOH, Intron and Wildtype mutations
+      // accepts all mutations other than Silent, Intron and Wildtype mutations
       // not valid && somatic
       nowTestAcceptMutation( 
                myMutationFilter,
@@ -120,6 +120,16 @@ public class TestMutationFilter extends IntegrationTestBase {
                "Unknown"         // mutationType
             );
 
+      // LoH-status mutations are accepted (first-class events in the MTB datasets)
+      nowTestAcceptMutation(
+               myMutationFilter,
+               true,
+               4L,
+               "Unknown",        // validationStatus,
+               "LoH",        // mutationStatus,
+               "Missense_Mutation"         // mutationType
+            );
+
    }
 
    
@@ -147,7 +157,7 @@ public class TestMutationFilter extends IntegrationTestBase {
    
    private void alwaysRejectTheseMutations(MutationFilter myMutationFilter){
 
-      // REJECT: Silent, LOH, Intron and Wildtype mutations
+      // REJECT: Silent, Intron and Wildtype mutations
       nowTestAcceptMutation( 
                myMutationFilter,
                false, 
@@ -163,14 +173,6 @@ public class TestMutationFilter extends IntegrationTestBase {
                "Unknown",
                "Unknown",
                "Intron"
-            );
-      nowTestAcceptMutation( 
-               myMutationFilter,
-               false, 
-               1L, 
-               "Unknown",
-               "LOH",
-               "Unknown"
             );
       nowTestAcceptMutation( 
                myMutationFilter,

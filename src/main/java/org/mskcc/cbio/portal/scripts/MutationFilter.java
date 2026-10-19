@@ -50,7 +50,7 @@ public class MutationFilter {
    private int unknownAccepts=0;
    public int decisions=0;
    private int mutationStatusNoneRejects=0;
-   private int lohOrWildTypeRejects=0;
+   private int wildtypeRejects=0;
    private int emptyAnnotationRejects=0;
    private int missenseGermlineRejects=0;
    private int redactedRejects=0;
@@ -60,9 +60,9 @@ public class MutationFilter {
     * Construct a MutationFilter with no white lists. 
     * This filter will 
     * <br>
-    * REJECT Silent, LOH, Intron and Wildtype mutations, and
+    * REJECT Silent, Intron and Wildtype mutations, and
     * <br>
-    * KEEP all other mutations.
+    * KEEP all other mutations (LoH-status mutations are accepted).
     */
    public MutationFilter() throws IllegalArgumentException{
       whiteListGenesForPromoterMutations = new HashSet<Long>();
@@ -106,10 +106,10 @@ public class MutationFilter {
           return false;
       }
       
-      // Do not accept LOH or Wildtype Mutations
-      if( safeStringTest( mutation.getMutationStatus(), "LOH" ) ||
-               safeStringTest( mutation.getMutationStatus(), "Wildtype" ) ){
-         lohOrWildTypeRejects++;
+      // Do not accept Wildtype Mutations. LoH-status mutations are accepted:
+      // they are first-class events in the MTB datasets (Mutation_Status=LoH)
+      if( safeStringTest( mutation.getMutationStatus(), "Wildtype" ) ){
+         wildtypeRejects++;
          return false;
       }
       
@@ -177,11 +177,11 @@ public class MutationFilter {
     }
 
     /**
-     * Provide number of REJECT decisions for LOH or Wild Type Mutations.
-     * @return number of REJECT decisions for LOH or Wild Type Mutations.
+     * Provide number of REJECT decisions for Wildtype Mutations.
+     * @return number of REJECT decisions for Wildtype Mutations.
      */
-   public int getLohOrWildTypeRejects() {
-       return this.lohOrWildTypeRejects;
+   public int getWildtypeRejects() {
+       return this.wildtypeRejects;
    }
 
     /**
@@ -250,7 +250,7 @@ public class MutationFilter {
       String statistics = "Mutation filter decisions: " + this.getDecisions() +
             "\nRejects: " + this.getRejects() +
             "\nMutation Status 'None' Rejects:  " + this.getMutationStatusNoneRejects() +
-            "\nLOH or Wild Type Rejects:  " + this.getLohOrWildTypeRejects() +
+            "\nWildtype Rejects:  " + this.getWildtypeRejects() +
             "\nEmpty Annotation Rejects:  " + this.getEmptyAnnotationRejects() +
             "\nMissense Germline Rejects:  " + this.getMissenseGermlineRejects();
       

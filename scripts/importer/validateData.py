@@ -2131,7 +2131,7 @@ class MutationsExtendedValidator(CustomDriverAnnotationValidator, CustomNamespac
                                                                  norm_allele1, norm_allele2)}
                     self.send_log_message(self.strict_maf_checks, log_message, extra_dict)
 
-            # If for LOH (9C) not implemented, because mutation will not be loaded in cBioPortal
+            # 9C validation-allele check is not implemented for LOH-status mutations
 
         return True
 
@@ -2417,7 +2417,7 @@ class MutationsExtendedValidator(CustomDriverAnnotationValidator, CustomNamespac
 
     def checkMutationStatus(self, value):
         """Check values in mutation status column."""
-        if value.lower() in ['loh', 'none', 'wildtype']:
+        if value.lower() in ['none', 'wildtype']:
             self.logger.info('Mutation will not be loaded due to value in Mutation_Status',
                                 extra={'line_number': self.line_number, 'cause': value})
         if value.lower() not in ['none', 'germline', 'somatic', 'loh', 'post-transcriptional modification', 'unknown', 'wildtype'] and value != '':
