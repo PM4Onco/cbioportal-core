@@ -2420,7 +2420,7 @@ class MutationsExtendedValidator(CustomDriverAnnotationValidator, CustomNamespac
         if value.lower() in ['none', 'wildtype']:
             self.logger.info('Mutation will not be loaded due to value in Mutation_Status',
                                 extra={'line_number': self.line_number, 'cause': value})
-        if value.lower() not in ['none', 'germline', 'somatic', 'loh', 'post-transcriptional modification', 'unknown', 'wildtype'] and value != '':
+        if value.lower() not in ['none', 'germline', 'somatic', 'loh', 'tumor', 'post-transcriptional modification', 'unknown', 'wildtype'] and value != '':
             self.logger.warning('Mutation_Status value is not in MAF format',
                                 extra={'line_number': self.line_number, 'cause': value})
         if value.lower() == 'germline':
